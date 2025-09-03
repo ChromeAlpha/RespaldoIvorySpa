@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2 class="mb-3">Gestión de Usuarios</h2>
+
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-success alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  <table class="table table-bordered">
+    <thead class="table-light">
+      <tr>
+        <th>Usuario</th>
+        <th>Rol</th>
+        <th>Acción</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for usuario in usuarios %}
+        <tr>
+          <td>{{ usuario.username }}</td>
+          <td>
+            {% if usuario.is_staff %}
+              <span class="badge bg-primary">Administrador</span>
+            {% else %}
+              <span class="badge bg-secondary">Cliente</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if not usuario.is_staff %}
+              <form method="post">
+                {% csrf_token %}
+                <input type="hidden" name="user_id" value="{{ usuario.id }}">
+                <button type="submit" class="btn btn-sm btn-success">Asignar como Administrador</button>
+              </form>
+            {% else %}
+              <span class="text-muted">Ya es administrador</span>
+            {% endif %}
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% endblock %}
