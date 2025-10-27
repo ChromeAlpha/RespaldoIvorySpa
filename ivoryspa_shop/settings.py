@@ -50,7 +50,6 @@ LOGIN_REDIRECT_URL = '/home/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -81,24 +80,15 @@ WSGI_APPLICATION = 'ivoryspa_shop.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-if os.getenv("DATABASE_URL"):
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=os.getenv("DATABASE_URL"),
-            conn_max_age=600,
-            ssl_require=True
-        )
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'localhost:1521/XEPDB1',
+        'USER': 'ivoryspa',
+        'PASSWORD': 'Ivory2025',
     }
-else:
-    # Oracle (Local)
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.oracle',
-            'NAME': 'localhost:1521/XEPDB1',
-            'USER': 'ivoryspa',
-            'PASSWORD': 'Ivory2025',
-        }
-    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/5.2/ref/settings/#auth-password-validators
@@ -134,8 +124,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.2/howto/static-files/
 
-STATIC_URL = 'staticfiles/'
-STATIC_ROOT = BASE_DIR / 'staticfiles'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
