@@ -4,9 +4,9 @@ services:
     env: python
     plan: free
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn ivoryspa_shop.wsgi:application"
+    startCommand: "gunicorn ivoryspa_shop.wsgi"
     envVars:
       - key: DJANGO_SETTINGS_MODULE
         value: ivoryspa_shop.settings
       - key: PYTHON_VERSION
-        value: 3.11
+        value: 3.11.3

@@ -28,7 +28,7 @@ MEDIA_ROOT = BASE_DIR / 'media'
 SECRET_KEY = 'django-insecure-6#5(vty)64hpd+1$v=m^!_s0^yr-6$l5ip0_43g8eneqg-5(hj'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -82,7 +82,16 @@ WSGI_APPLICATION = 'ivoryspa_shop.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
-if DEBUG: # Oracle Base de Datos
+if os.getenv("DATABASE_URL"):
+    DATABASES = {
+        "default": dj_database_url.config(
+            default=os.getenv("DATABASE_URL"),
+            conn_max_age=600,
+            ssl_require=True
+        )
+    }
+else:
+    # Oracle (Local)
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.oracle',
@@ -90,10 +99,6 @@ if DEBUG: # Oracle Base de Datos
             'USER': 'ivoryspa',
             'PASSWORD': 'Ivory2025',
         }
-    }
-else: # Base de datos en producción
-    DATABASES = {
-        'default': dj_database_url.config(conn_max_age=600, ssl_require=True)
     }
 
 # Password validation
